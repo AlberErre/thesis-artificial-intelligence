@@ -37,11 +37,6 @@ class Memory:
             batch.append((index, data))
         return batch
 
-        # IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!!
-    def take_BLABLABLABLA (self, n): 
-        # INVENTARME otra forma de tratar la memoria para la thesis, cambiar el batch o algo (conversacion sillon casa de javi)
-        pass
-
     def update(self, index, error):
         priority = self.priority_while_remember(error)
         self.cerebro.update(index, priority)
