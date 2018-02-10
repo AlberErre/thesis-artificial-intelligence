@@ -7,29 +7,23 @@ from keras.layers import *
 from keras.optimizers import *
 from keras.models import load_model
 
-# IMPORTANTE!!!!
-# Cambiando las dimensiones se crea informacion "generalizada" en la memoria, manchas borrosas
-# Estas manchas son las generalizaciones que andamos buscando para utilizar memoria que se genera en otro juego
-# screen__alto = 210/5   # Tamano minimo dividiendo entre 5, una X mayor hace fallar la red convolucional
-# screen_ancho = 210/5   # cuando mas divides, mas pequeno, y mayor generalizacion  (base del trabajo es la generalizacion)
-
 """ IMPORTANTISIMO:
 El Tamano de la pantalla es la clave, cuando mas pequeno mas generaliza y mas rapido procesa la CPU
 screen__alto = 210/X    cuanto mayor sea X --> mayor generalizacion y mayor velocidad de procesamiento
 screen_ancho = 160/X    Sin embargo, si la X es mayor a (), la red convolucional no funciona, ese es el limite
 """
 # screen parameters:
-screen__alto = int(210/5)  		 # Tamano minimo dividiendo entre 5, una X mayor hace fallar la red convolucional
-screen_ancho = int(160/5)  		 # cuanto mayor sea X --> mayor generalizacion y mayor velocidad de procesamiento (menos pixeles)
+screen__alto = int(210/5)  		
+screen_ancho = int(160/5)  		
 
 #### MAIN HYPER-PARAMETERS ####
-memory_size = 20000 			 # Cuanta mas capacidad, mas observaciones disponibles para tomar decisiones
-batch_size = 32 				 # Trozos de la memoria que se cogen para tomar decisiones
-DoubleQ_update_frequency = 10000 # Update the targets (predictions), para el doubleQ learning
-learning_rate = 0.5 			 # For the convolutional model, this model is used to make the predictions of the Q values
-gamma = 0.99 					 # If this is low, it takes a LOT of time to finish 100 iterations - the higher the better
-epsilon = 0.6   				 # e-greedy policy (exploracion!) - higher value, more probability to explore
-epsilon_decay = 0.99   			 # Speed of decay --> "epsilon_decay = 1" means NO DECAY (infinite exploration)
+memory_size = 20000 			 
+batch_size = 32 				# Trozos de la memoria que se cogen para tomar decisiones
+DoubleQ_update_frequency = 10000 		# Update the targets (predictions), para el doubleQ learning
+learning_rate = 0.5 			 	# For the convolutional model, this model is used to make the predictions of the Q values
+gamma = 0.99 					# If this is low, it takes a LOT of time to finish 100 iterations - the higher the better
+epsilon = 0.6   				# e-greedy policy (exploracion!) - higher value, more probability to explore
+epsilon_decay = 0.99   			 	# Speed of decay --> "epsilon_decay = 1" means NO DECAY (infinite exploration)
 
 class Brain:
     def __init__(self, state_space, actions_space):
@@ -115,17 +109,13 @@ class arbol_binario_suma:
         
 class Memory:       
     non_zero   = 0.0001    # Evita que la funcion sea cero - nonzero function!
-    exponente  = 0.9  # Cuanto mas grande mejores Q values (bueno) - cuanto mas pequeno mas tienden a cero los Q values (malo)
+    exponente  = 0.9  	   # Cuanto mas grande mejores Q values (bueno) - cuanto mas pequeno mas tienden a cero los Q values (malo)
 
     def __init__(self, storage):
         self.cerebro = arbol_binario_suma(storage)
 
     def priority_while_remember(self, error):
         return (error + self.non_zero) ** self.exponente # proportional priority
-        ## NOTE: USE DIFFERENT CASES of PRIORITIZATION for the THESIS
-        ## IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT !!!!!!
-                ## IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT !!!!!!
-        # como "Rank-based prioritization", o cosas asi Paper: PRIORITIZED EXPERIENCE REPLAY (2016)
 
     def create_new_memory(self, error, new_memory):
         priority = self.priority_while_remember(error)
@@ -141,11 +131,6 @@ class Memory:
             (index, priority, data) = self.cerebro.get(Y)
             batch.append((index, data))
         return batch
-
-        # IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!! IMPORTANTEEEEEE !!!!!!!
-    def take_BLABLABLABLA (self, n): 
-        # INVENTARME otra forma de tratar la memoria para la thesis, cambiar el batch o algo (conversacion sillon casa de javi)
-        pass
 
     def update(self, index, error):
         priority = self.priority_while_remember(error)
@@ -274,7 +259,6 @@ class Play: # This is the ENVIRONMENT
         total_reward = 0
         num_iteraciones = 0 # Steps
         while True:        
-            # RENDER --> This is to watch the agent working (screen) 
             #self.env.render()
             action = agent.pickAction(state) # pick an action given current state
             image, reward, done, info = self.env.step(action)
@@ -293,31 +277,10 @@ class Play: # This is the ENVIRONMENT
 
         return total_reward, num_iteraciones
 
-#-------------------- MAIN ----------------------------
-    #Original--> 'Seaquest-v0' (submarino)
-#Buscar juegos similares para "exportar" la memoria obtenida (disparos hacia arriba), lista:
-    # Carnival-v0
-    # DemonAttack-v0
-    # SpaceInvaders-v0
-    # Assault-v0
-    # Phoenix-v0 (slightly different, y mucho mas largo)
-
-# More complex games (more movement possibilities and/or different image structures):
-    # Centipede-v0
-    # Riverraid-v0
-    # Solaris-v0 (MUY MUY largo)
-    # Pooyan-v0 (guapisimo, pero complicado, cambia mucho el modo de juego)
-    # StarGunner-v0 (ultra complicado, no entiendo lo que hace, muy diferente)
-    # Zaxxon-v0 (muy parecido, PERO ultra complicado para conseguir los primeros scores, y largo) 
-
 #-------------------- SAME GAME ----------------------------
-
+"""
 GAME = 'DemonAttack-v0' # Assault-v0 da muy buenos resultados
 atari = Play(GAME)
-
-# REVISAR CLASS MEMORY --> tengo que jugar con eso para hacer cosas interesantes en el projecto
-# REVISAR CLASS MEMORY --> tengo que jugar con eso para hacer cosas interesantes en el projecto
-# REVISAR CLASS MEMORY --> tengo que jugar con eso para hacer cosas interesantes en el projecto
 
 state_space  = (2, screen__alto, screen_ancho)
 actions_space = atari.env.action_space.n
@@ -378,21 +341,9 @@ finally:
     plt.legend()
     plt.show()
 
-    ### Horizontal lines chart (to show results after try games with a without primitive) ###
-    # plt.hlines
-    
-    # There is no final state in this environment, the point is to maintain a certain reward over the time
-    # Because the agent has not a final state, it needs to explore to try to increase the final reward
-    
-    # model = load_model("atari_model.h5")
-
-    # Esto es para cargar los modelos guardados, y usarlos en otro environment
 
 """
 #-------------------- EXPORTABLE GAME ----------------------------
-
-# Prueba para exportar un juego sobre otro, entrenando memoria con primitive_Agent (un juego concreto)
-# Para luego aplicar esta memoria en el Agent (usando un juego diferente)
 
 GAME = 'DemonAttack-v0'
 EXPORTABLE_GAME = 'Assault-v0' #juego que vamos a utilizar para el primitive agent y luego exportarlo
@@ -459,22 +410,3 @@ finally:
     plt.title("LearningRate: " + str(learning_rate) + " Epsilon: " + str(epsilon) + " DoubleQ update freq: " + str(DoubleQ_update_frequency) + "\n Memory size: " + str(memory_size) + " Batch size: " + str(batch_size) + " Gamma" + str(gamma))
     plt.legend()
     plt.show()
-
-
-"""
-
-#----------------------- END ----------------------------
-
-"""
-<Notas>
-
-Tambien podria usar un juego ya entrenado y contenido en el .h5 para inicializar el algoritmo (primivite_Agent)
-Osea, en lugar de usar un juego (jugado de forma aleatoria), y luego exportarlo a otro juego diferente;
-lo que podria hacer es jugar al mismo juego (primitive_Agent y Agent) y una vez ha aprendido, usar ESA memoria para otro juego
-Es decir, en lugar de cargar un juego aleatorio, cargar otro juego ya aprendido, tras usar "atari.run(Agent)". 
-Eso daria mas valor
-
-"""
-
-
-
