@@ -6,7 +6,7 @@ This project is based on AI memory abstraction using deep reinforcement learning
 
 ### Goal:
 
-The main goal is to teach a software agent (AI) to play an Atari game, then, use this information to play a different game, using previous experience instead of learning the new game from scratch.
+The main goal is to teach a software agent (AI) to play an Atari game, and then, use this information to play a different game, using previous experience instead of learning the new game from scratch.
 
 ---------- 
 
