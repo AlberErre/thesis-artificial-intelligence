@@ -1,12 +1,3 @@
-import gym, numpy, random, scipy
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from keras import backend as K_backend
-from keras.models import Sequential
-from keras.layers import *
-from keras.optimizers import *
-from keras.models import load_model
-
 class Brain:
     def __init__(self, state_space, actions_space):
         self.state_space = state_space
