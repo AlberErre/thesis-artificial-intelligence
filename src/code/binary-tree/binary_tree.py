@@ -1,13 +1,3 @@
-import gym, numpy, random, scipy
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from keras import backend as K_backend
-from keras.models import Sequential
-from keras.layers import *
-from keras.optimizers import *
-from keras.models import load_model
-
-
 class arbol_binario_suma: 
 # Esto es como el Cerebro, osea la forma en que la memoria funciona
 # Esta basado en sumatorios de Arboles binarios - ideal para tomar muestras de la memoria sin tener que ordenar todos los recuerdos en un vector
