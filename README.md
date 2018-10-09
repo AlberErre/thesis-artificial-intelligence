@@ -18,7 +18,7 @@ The main goal is to teach a software agent (AI) to play an Atari game, and then,
 |🌲| [Binary tree](src/code/binary-tree)            | Defines how the brain works
 |🕹️| [Brain](src/code/brain)                        | Runs convolutional model
 |🗄️| [Memory](src/code/memory)                      | Stores and Manages memories
-|🔧| [Pixel management](src/code/rgb_2_gray)  | Transforms raw images into blurred gray pixel inputs, easy to process
+|🔧| [Pixel management](src/code/pixel-management)  | Transforms raw images into blurred gray pixel inputs, easy to process
 |📦| [Core](src/code/core)                          | All the code with dependencies, ready to use
 
 ---------- 
