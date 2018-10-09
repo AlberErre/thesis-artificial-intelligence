@@ -1,13 +1,3 @@
-import gym, numpy, random, scipy
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from keras import backend as K_backend
-from keras.models import Sequential
-from keras.layers import *
-from keras.optimizers import *
-from keras.models import load_model
-
-
 class Memory:       
     non_zero   = 0.0001    # Evita que la funcion sea cero - nonzero function!
     exponente  = 0.9  # Cuanto mas grande mejores Q values (bueno) - cuanto mas pequeno mas tienden a cero los Q values (malo)
