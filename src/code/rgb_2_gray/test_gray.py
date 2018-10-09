@@ -1,5 +1,5 @@
 
-imagen = open('test.jpg')
+imagen = open('mini-albererre.jpg')
 gray = Color2Gray(imagen)
 
 def Color2Gray(color_image): # Como en computer vision, usamos RGB para cambiar la imagen a tono de grises y poder procesarla
